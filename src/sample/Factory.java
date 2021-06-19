@@ -241,7 +241,7 @@ public class Factory {
                 for(int j=0;j<x.studentCount;i++){
                     if(x.studentArray[j].getCourse() == Pricourse){
                         if(x.studentArray[j].getNumber() > 0){
-                            x.section[secOfCIndex].addSection(x.instructorArray[i].getInstructorName(), 'A', roomEmptyIndex, 0);
+                            x.section[secOfCIndex].addSection(x.instructorArray[i], "A", roomEmptyIndex, 0);
                         }
                     }
                 }
