@@ -38,7 +38,7 @@ public class Factory {
         String line = "";
         int count;
         try{
-            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDA Project\\src\\sample\\Instructor.csv");
+            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Instructor.csv");
             BufferedReader br = new BufferedReader(fr);
 
             while((line = br.readLine()) != null){
@@ -61,7 +61,7 @@ public class Factory {
         String line = "";
         int count;
         try{
-            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDA Project\\src\\sample\\Courses.csv");
+            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Courses.csv");
             BufferedReader br = new BufferedReader(fr);
 
             while((line = br.readLine()) != null){
@@ -82,7 +82,7 @@ public class Factory {
         String line = "";
         int count;
         try{
-            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDA Project\\src\\sample\\Rooms.csv");
+            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Rooms.csv");
             BufferedReader br = new BufferedReader(fr);
 
             while((line = br.readLine()) != null){
@@ -104,7 +104,7 @@ public class Factory {
         String line = "";
         int count;
         try{
-            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDA Project\\src\\sample\\Students.csv");
+            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Students.csv");
             BufferedReader br = new BufferedReader(fr);
 
             while((line = br.readLine()) != null){
@@ -122,14 +122,14 @@ public class Factory {
 
     public void writeInstructors(String name , String primaryCourse , String secondaryCourse , String prefferedDay , int prefferenedTime){
         try {
-            FileWriter fw = new FileWriter("C:\\Users\\Dell\\IdeaProjects\\SDA Project\\src\\sample\\Instructor.csv" , true);
+            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Instructor.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
 
             String line="";
             FileReader fr;
-            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDA Project\\src\\sample\\Instructor.csv");
+            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Instructor.csv");
             BufferedReader br = new BufferedReader(fr);
             String [] values = null;
             while((line = br.readLine()) != null){
@@ -150,14 +150,14 @@ public class Factory {
 
     public void writeCourses(String name){
         try {
-            FileWriter fw = new FileWriter("C:\\Users\\Dell\\IdeaProjects\\SDA Project\\src\\sample\\Courses.csv" , true);
+            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sampleCourses.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
 
             String line="";
             FileReader fr;
-            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDA Project\\src\\sample\\Courses.csv");
+            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sampleCourses.csv");
             BufferedReader br = new BufferedReader(fr);
             String [] values = null;
             while((line = br.readLine()) != null){
@@ -177,14 +177,14 @@ public class Factory {
 
     public void writeRooms(int number){
         try {
-            FileWriter fw = new FileWriter("C:\\Users\\Dell\\IdeaProjects\\SDA Project\\src\\sample\\Rooms.csv" , true);
+            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sampleRooms.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
 
             String line="";
             FileReader fr;
-            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDA Project\\src\\sample\\Rooms.csv");
+            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sampleRooms.csv");
             BufferedReader br = new BufferedReader(fr);
             String [] values = null;
             while((line = br.readLine()) != null){
@@ -204,7 +204,7 @@ public class Factory {
 
     public void writeStudents(int num , String course){
         try {
-            FileWriter fw = new FileWriter("C:\\Users\\Dell\\IdeaProjects\\SDA Project\\src\\sample\\Students.csv" , true);
+            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sampleStudents.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
@@ -221,14 +221,31 @@ public class Factory {
         String Pricourse;
         for(int i = 0;i<x.instructorCount;i++){
             Pricourse =  x.instructorArray[i].getPrimaryCourse();
-            int courseIndex = Arrays.binarySearch(x.courseArray, Pricourse);
+            int courseIndex = -1;
+            for(int j=0;j<x.courseCount;j++){
+                if(x.courseArray[j].getCourseName().equals(Pricourse)){
+                    courseIndex = j;
+                    break;
+                }
+            }
             if(courseIndex != -1) {
-                int secOfCIndex = Arrays.binarySearch(x.section, Pricourse);
+                int secOfCIndex = -1;
+                for(int j=0;j<x.sectionOfCoursesCount;j++){
+                    if(x.section[j].getCourse().equals(Pricourse)){
+                        secOfCIndex = j;
+                        break;
+                    }
+                }
                 if(secOfCIndex == -1) {
                     Course temp = new Course(x.courseArray[courseIndex].getCourseName(), x.courseArray[courseIndex].getCourseID());
-                    x.section[x.sectionOfCoursesCount].setCourse(temp);
+                    x.section[x.sectionOfCoursesCount] = new SectionOfCourses(temp);
                 }
-                secOfCIndex = Arrays.binarySearch(x.section, Pricourse);
+                for(int j=0;j<x.sectionOfCoursesCount;j++){
+                    if(x.section[j].getCourse().equals(Pricourse)){
+                        secOfCIndex = j;
+                        break;
+                    }
+                }
                 int roomEmptyIndex = -1;
                 for(int j=0;j<x.roomCount;j++){
                     if(x.roomArray[j].inUse == false){
@@ -238,8 +255,8 @@ public class Factory {
                 }
 
                 int studentsNo = 0;
-                for(int j=0;j<x.studentCount;i++){
-                    if(x.studentArray[j].getCourse() == Pricourse){
+                for(int j=0;j<x.studentCount;j++){
+                    if(x.studentArray[j].getCourse().equals(Pricourse)){
                         if(x.studentArray[j].getNumber() > 0){
                             x.section[secOfCIndex].addSection(x.instructorArray[i], "A", roomEmptyIndex, 0);
                         }

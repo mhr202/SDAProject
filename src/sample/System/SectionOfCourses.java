@@ -13,8 +13,12 @@ public class SectionOfCourses {
 
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public SectionOfCourses(Course coursew) {
+        course = coursew;
+    }
+
+    public String getCourse() {
+        return course.getCourseName();
     }
 
     public void addSection(Instructor inst, String sec, int room, int students){
