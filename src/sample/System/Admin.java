@@ -55,6 +55,7 @@ public class Admin extends Application  {
         layoutAdminPage.getChildren().addAll(AdminLabel, AddInstructor, AddCourse, AddRoom, AddStudents, CreateSchedule);
         AdminPage = new Scene(layoutAdminPage, 600, 400);
 
+        //CreateALl Other Scenes
         CreateTableScenes();
 
         window.setScene(AdminPage);
@@ -96,6 +97,7 @@ public class Admin extends Application  {
         VBox layoutInfo = new VBox();
         table.setEditable(true);
 
+        data.clear();
         for(int i=0; i<fc.instructorCount; i++){
             data.addAll(FXCollections.observableArrayList(
                     new Instructor(fc.instructorArray[i])));
@@ -143,6 +145,8 @@ public class Admin extends Application  {
 
                     System.out.print(Name+PriC+SecC+Day+Time);
                     fc.writeInstructors(Name, PriC, SecC, Day, Time);
+                    fc.readInstructors();
+                    CreateTableScenes();
                 }
         );
 
@@ -170,6 +174,7 @@ public class Admin extends Application  {
         VBox layoutInfoC = new VBox();
         tableC.setEditable(true);
 
+        dataC.clear();
         for(int i=0; i<fc.courseCount; i++){
             dataC.addAll(FXCollections.observableArrayList(
                     new Course(fc.courseArray[i])));
@@ -201,6 +206,8 @@ public class Admin extends Application  {
 
                     System.out.print(Name);
                     fc.writeCourses(Name);
+                    fc.readCourses();
+                    CreateTableScenes();
                 }
         );
 
@@ -220,6 +227,7 @@ public class Admin extends Application  {
         VBox layoutInfoR = new VBox();
         tableR.setEditable(true);
 
+        dataR.clear();
         for(int i=0; i<fc.roomCount; i++){
             dataR.addAll(FXCollections.observableArrayList(
                     new Room(fc.roomArray[i])));
@@ -253,6 +261,8 @@ public class Admin extends Application  {
 
                     System.out.print(cap);
                     fc.writeRooms(cap);
+                    fc.readRooms();
+                    CreateTableScenes();
                 }
         );
 
@@ -272,6 +282,7 @@ public class Admin extends Application  {
         VBox layoutInfoS = new VBox();
         tableS.setEditable(true);
 
+        dataS.clear();
         for(int i=0; i<fc.studentCount; i++){
             dataS.addAll(FXCollections.observableArrayList(
                     new Students(fc.studentArray[i])));
@@ -305,6 +316,8 @@ public class Admin extends Application  {
 
                     System.out.print(num+course);
                     fc.writeStudents(num, course);
+                    fc.readStudents();
+                    CreateTableScenes();
                 }
         );
 

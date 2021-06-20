@@ -1,6 +1,7 @@
 package sample.System;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class Factory {
 
@@ -31,6 +32,8 @@ public class Factory {
     }
 
     public void readInstructors(){
+        Arrays.fill(instructorArray, null);
+        instructorCount = 0;
         FileReader fr;
         String line = "";
         int count;
@@ -54,6 +57,8 @@ public class Factory {
     }
 
     public void readCourses(){
+        Arrays.fill(courseArray, null);
+        courseCount = 0;
         FileReader fr;
         String line = "";
         int count;
@@ -75,6 +80,8 @@ public class Factory {
     }
 
     public void readRooms(){
+        Arrays.fill(roomArray, null);
+        roomCount = 0;
         FileReader fr;
         String line = "";
         int count;
@@ -97,6 +104,8 @@ public class Factory {
     }
 
     public void readStudents(){
+        Arrays.fill(studentArray, null);
+        studentCount = 0;
         FileReader fr;
         String line = "";
         int count;
