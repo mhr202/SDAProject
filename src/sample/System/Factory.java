@@ -1,9 +1,6 @@
-package sample;
-
-import sample.System.*;
+package sample.System;
 
 import java.io.*;
-import java.util.*;
 
 public class Factory {
 

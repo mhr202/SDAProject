@@ -1,7 +1,5 @@
 package sample.System;
 
-import sample.Factory;
-
 public class Instructor extends Factory {
     private String instructorName;
     private int instructorID;
@@ -14,6 +12,15 @@ public class Instructor extends Factory {
 
     }
 
+    //copy constructor
+    Instructor(Instructor inst){
+        instructorID = inst.instructorID;
+        instructorName = inst.instructorName;
+        primaryCourse =  inst.primaryCourse;
+        secondaryCourse =  inst.secondaryCourse;
+        preferredDay =  inst.preferredDay;
+        preferredTime = inst.preferredTime;
+    }
     public Instructor(int ID, String name, String priCourse, String secCourse, String day, int time){
         instructorID = ID;
         instructorName = name;
@@ -45,6 +52,10 @@ public class Instructor extends Factory {
 
     public String getInstructorName(){
         return instructorName;
+    }
+
+    public void print(){
+        System.out.print(instructorID+ instructorName+ primaryCourse+ secondaryCourse+ preferredDay+ preferredTime);
     }
 
 }

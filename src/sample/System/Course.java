@@ -15,7 +15,8 @@ public class Course {
 
     //copy constructor
     Course(Course course){
-
+        courseName = course.courseName;
+        courseID = course.courseID;
     }
 
     public int getCourseID(){

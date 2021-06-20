@@ -9,6 +9,12 @@ public class Room {
 
     }
 
+    Room(Room room){
+        roomID = room.roomID;
+        roomCapacity = room.roomCapacity;
+        inUse = room.inUse;
+    }
+
     public Room(int ID, int capacity){
         roomID = ID;
         roomCapacity = capacity;

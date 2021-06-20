@@ -9,6 +9,11 @@ public class Students {
         Course = c;
     }
 
+    Students(Students stu){
+        Number = stu.Number;
+        Course = stu.Course;
+    }
+
     public int getNumber() {
         return Number;
     }
