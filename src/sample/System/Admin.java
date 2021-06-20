@@ -3,12 +3,8 @@ package sample.System;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -18,7 +14,7 @@ public class Admin extends Application  {
 
     Stage window;
     Scene AdminPage, InstructorInfo, CourseInfo, RoomsInfo, StudentsInfo, ScheduleInfo;
-    Scene AddInstructor, AddCourse;
+    Scene AddInstructor, AddCourse, AddRoom, AddStudents;
     Factory fc = new Factory();
     private TableView table = new TableView<Instructor>();
     private TableView tableC = new TableView<Course>();
@@ -92,6 +88,7 @@ public class Admin extends Application  {
     }
 
     private void extractedInstructorInfo() {
+
         Button BackToAdminI = new Button("Back To Admin");
         BackToAdminI.setOnAction(e -> window.setScene(AdminPage));
         Button AddI = new Button("Add Instructor");
@@ -100,7 +97,6 @@ public class Admin extends Application  {
         table.setEditable(true);
 
         for(int i=0; i<fc.instructorCount; i++){
-            fc.instructorArray[i].print();
             data.addAll(FXCollections.observableArrayList(
                     new Instructor(fc.instructorArray[i])));
         }
@@ -123,13 +119,54 @@ public class Admin extends Application  {
 
         layoutInfo.getChildren().addAll(table, BackToAdminI, AddI);
         InstructorInfo = new Scene(layoutInfo, 600, 400);
+
+        //Add Instructor Scene
+        AddInstructor();
+    }
+
+    private void AddInstructor() {
+        TextField IName = new TextField();
+        TextField IPriC = new TextField();
+        TextField ISecC = new TextField();
+        TextField IDay = new TextField();
+        TextField ITime = new TextField();
+        Button BackToIInfo = new Button("Back To Instructor");
+        BackToIInfo.setOnAction(e -> window.setScene(InstructorInfo));
+        Button AddB = new Button("Add");
+        AddB.setOnAction(e ->
+                {
+                    String Name = IName.getText();
+                    String PriC = IPriC.getText();
+                    String SecC = ISecC.getText();
+                    String Day = IDay.getText();
+                    int Time = Integer.parseInt(ITime.getText());
+
+                    System.out.print(Name+PriC+SecC+Day+Time);
+                    fc.writeInstructors(Name, PriC, SecC, Day, Time);
+                }
+        );
+
+        VBox layoutAddI = new VBox();
+        layoutAddI.getChildren().addAll(BackToIInfo,
+                new Label("Instructor Name"),
+                IName,
+                new Label("Primary Course"),
+                IPriC,
+                new Label("Secondary Course"),
+                ISecC,
+                new Label("Preferred Day"),
+                IDay,
+                new Label("Preferred Time"),
+                ITime,
+                AddB);
+        AddInstructor = new Scene(layoutAddI, 600, 400);
     }
 
     private void extractedCourseInfo() {
         Button BackToAdminC = new Button("Back To Admin");
         BackToAdminC.setOnAction(e -> window.setScene(AdminPage));
         Button AddC = new Button("Add Course");
-        AddC.setOnAction(e -> window.setScene(AdminPage));
+        AddC.setOnAction(e -> window.setScene(AddCourse));
         VBox layoutInfoC = new VBox();
         tableC.setEditable(true);
 
@@ -148,13 +185,38 @@ public class Admin extends Application  {
 
         layoutInfoC.getChildren().addAll(tableC, BackToAdminC, AddC);
         CourseInfo = new Scene(layoutInfoC, 600, 400);
+
+        //Add Course
+        AddCourse();
+    }
+
+    private void AddCourse() {
+        TextField IName = new TextField();
+        Button BackToCInfo = new Button("Back To Course");
+        BackToCInfo.setOnAction(e -> window.setScene(CourseInfo));
+        Button AddC = new Button("Add");
+        AddC.setOnAction(e ->
+                {
+                    String Name = IName.getText();
+
+                    System.out.print(Name);
+                    fc.writeCourses(Name);
+                }
+        );
+
+        VBox layoutAddC = new VBox();
+        layoutAddC.getChildren().addAll(BackToCInfo,
+                new Label("Course Name"),
+                IName,
+                AddC);
+        AddCourse = new Scene(layoutAddC, 600, 400);
     }
 
     private void extractedRoomsInfo() {
         Button BackToAdminR = new Button("Back To Admin");
         BackToAdminR.setOnAction(e -> window.setScene(AdminPage));
         Button AddR = new Button("Add Room");
-        AddR.setOnAction(e -> window.setScene(AdminPage));
+        AddR.setOnAction(e -> window.setScene(AddRoom));
         VBox layoutInfoR = new VBox();
         tableR.setEditable(true);
 
@@ -175,13 +237,38 @@ public class Admin extends Application  {
 
         layoutInfoR.getChildren().addAll(tableR, BackToAdminR, AddR);
         RoomsInfo = new Scene(layoutInfoR, 600, 400);
+
+        //AddRoom
+        AddRoom();
+    }
+
+    private void AddRoom() {
+        TextField ICap = new TextField();
+        Button BackToRInfo = new Button("Back To Rooms");
+        BackToRInfo.setOnAction(e -> window.setScene(RoomsInfo));
+        Button AddR = new Button("Add");
+        AddR.setOnAction(e ->
+                {
+                    int cap = Integer.parseInt(ICap.getText());
+
+                    System.out.print(cap);
+                    fc.writeRooms(cap);
+                }
+        );
+
+        VBox layoutAddR = new VBox();
+        layoutAddR.getChildren().addAll(BackToRInfo,
+                new Label("Room Capacity"),
+                ICap,
+                AddR);
+        AddRoom = new Scene(layoutAddR, 600, 400);
     }
 
     private void extractedStudentInfo() {
         Button BackToAdminS = new Button("Back To Admin");
         BackToAdminS.setOnAction(e -> window.setScene(AdminPage));
         Button AddS = new Button("Add Students");
-        AddS.setOnAction(e -> window.setScene(AdminPage));
+        AddS.setOnAction(e -> window.setScene(AddStudents));
         VBox layoutInfoS = new VBox();
         tableS.setEditable(true);
 
@@ -200,6 +287,35 @@ public class Admin extends Application  {
 
         layoutInfoS.getChildren().addAll(tableS, BackToAdminS, AddS);
         StudentsInfo = new Scene(layoutInfoS, 600, 400);
+
+        //Add Students
+        AddStudents();
+    }
+
+    private void AddStudents() {
+        TextField INum = new TextField();
+        TextField ICourse = new TextField();
+        Button BackToSInfo = new Button("Back To Students");
+        BackToSInfo.setOnAction(e -> window.setScene(StudentsInfo));
+        Button AddS = new Button("Add");
+        AddS.setOnAction(e ->
+                {
+                    int num = Integer.parseInt(INum.getText());
+                    String course = ICourse.getText();
+
+                    System.out.print(num+course);
+                    fc.writeStudents(num, course);
+                }
+        );
+
+        VBox layoutAddS = new VBox();
+        layoutAddS.getChildren().addAll(BackToSInfo,
+                new Label("Number"),
+                INum,
+                new Label("Course"),
+                ICourse,
+                AddS);
+        AddStudents= new Scene(layoutAddS, 600, 400);
     }
 
     public static void main(String[] args) {

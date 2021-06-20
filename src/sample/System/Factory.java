@@ -147,14 +147,14 @@ public class Factory {
 
     public void writeCourses(String name){
         try {
-            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sampleCourses.csv" , true);
+            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Courses.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
 
             String line="";
             FileReader fr;
-            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sampleCourses.csv");
+            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Courses.csv");
             BufferedReader br = new BufferedReader(fr);
             String [] values = null;
             while((line = br.readLine()) != null){
@@ -174,14 +174,14 @@ public class Factory {
 
     public void writeRooms(int number){
         try {
-            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sampleRooms.csv" , true);
+            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Rooms.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
 
             String line="";
             FileReader fr;
-            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sampleRooms.csv");
+            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Rooms.csv");
             BufferedReader br = new BufferedReader(fr);
             String [] values = null;
             while((line = br.readLine()) != null){
@@ -201,7 +201,7 @@ public class Factory {
 
     public void writeStudents(int num , String course){
         try {
-            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sampleStudents.csv" , true);
+            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Students.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
