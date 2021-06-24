@@ -21,4 +21,8 @@ public class Students {
     public String getCourse() {
         return Course;
     }
+
+    public void setNumber(int num){
+        Number = num;
+    }
 }

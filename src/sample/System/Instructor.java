@@ -7,6 +7,8 @@ public class Instructor extends Factory {
     private String secondaryCourse;
     private String preferredDay;
     private int preferredTime;
+    private int maxPerDay;
+    private boolean isFill;
 
     public Instructor(){
 
@@ -20,6 +22,8 @@ public class Instructor extends Factory {
         secondaryCourse =  inst.secondaryCourse;
         preferredDay =  inst.preferredDay;
         preferredTime = inst.preferredTime;
+        maxPerDay = inst.maxPerDay;
+        isFill = inst.isFill;
     }
     public Instructor(int ID, String name, String priCourse, String secCourse, String day, int time){
         instructorID = ID;
@@ -28,6 +32,8 @@ public class Instructor extends Factory {
         secondaryCourse = secCourse;
         preferredDay = day;
         preferredTime = time;
+        maxPerDay = 2;
+        isFill = false;
     }
 
     public int getInstructorID() {
@@ -50,6 +56,10 @@ public class Instructor extends Factory {
         return preferredTime;
     }
 
+    public boolean getisFill(){ return isFill; }
+
+    public void ToogleIsFill(){ isFill = !isFill; }
+
     public String getInstructorName(){
         return instructorName;
     }
@@ -57,5 +67,6 @@ public class Instructor extends Factory {
     public void print(){
         System.out.print(instructorID+ instructorName+ primaryCourse+ secondaryCourse+ preferredDay+ preferredTime);
     }
+
 
 }

@@ -10,11 +10,16 @@ public class Factory {
     Room[] roomArray = new Room[100];
     Students[] studentArray = new Students[100];
     SectionOfCourses[] section =  new SectionOfCourses[10];
+    Section[] sectionArray = new Section[100];
     int sectionOfCoursesCount = 0;
     int instructorCount = 0;
     int courseCount = 0;
     int roomCount = 0;
     int studentCount = 0;
+    int TotalStudets = 0;
+    int sectionCount = 0;
+    int isSchedule = 0;
+    String ScheduleText = "";
 
     public static void main(String[] args) {
         read();
@@ -24,11 +29,11 @@ public class Factory {
         Factory x = new Factory();
         x.readInstructors();
         x.readCourses();
-        x.writeStudents(123 , "AI");
         x.readRooms();
         x.readStudents();
-
-        setSections(x);
+        x.calculateTotalStudents();
+        x.createSections();
+        x.setTimeSections();
     }
 
     public void readInstructors(){
@@ -38,7 +43,7 @@ public class Factory {
         String line = "";
         int count;
         try{
-            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Instructor.csv");
+            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Instructor.csv");
             BufferedReader br = new BufferedReader(fr);
 
             while((line = br.readLine()) != null){
@@ -63,7 +68,7 @@ public class Factory {
         String line = "";
         int count;
         try{
-            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Courses.csv");
+            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Courses.csv");
             BufferedReader br = new BufferedReader(fr);
 
             while((line = br.readLine()) != null){
@@ -79,6 +84,41 @@ public class Factory {
         }
     }
 
+    public void readSections(){
+        Arrays.fill(sectionArray, null);
+        sectionCount = 0;
+        FileReader fr;
+        String line = "";
+        int count;
+        try{
+            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Sections.csv");
+            BufferedReader br = new BufferedReader(fr);
+
+            while((line = br.readLine()) != null){
+                String [] values = line.split(",");
+                String sec = values[1];
+                String instructor = values[0];
+                int room = Integer.parseInt(values[2]);
+                int std = Integer.parseInt(values[3]);
+
+                Instructor i = null;
+
+                for(int j = 0 ; instructorArray[j] != null ; j++){
+                    if(instructor.equals(instructorArray[j].getInstructorName())){
+                       i = instructorArray[j];
+                    }
+                }
+
+                sectionArray[sectionCount] = new Section(i , sec , room , std);
+                sectionCount++;
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void readRooms(){
         Arrays.fill(roomArray, null);
         roomCount = 0;
@@ -86,7 +126,7 @@ public class Factory {
         String line = "";
         int count;
         try{
-            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Rooms.csv");
+            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Rooms.csv");
             BufferedReader br = new BufferedReader(fr);
 
             while((line = br.readLine()) != null){
@@ -110,7 +150,7 @@ public class Factory {
         String line = "";
         int count;
         try{
-            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Students.csv");
+            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Students.csv");
             BufferedReader br = new BufferedReader(fr);
 
             while((line = br.readLine()) != null){
@@ -128,14 +168,14 @@ public class Factory {
 
     public void writeInstructors(String name , String primaryCourse , String secondaryCourse , String prefferedDay , int prefferenedTime){
         try {
-            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Instructor.csv" , true);
+            FileWriter fw = new FileWriter("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Instructor.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
 
             String line="";
             FileReader fr;
-            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Instructor.csv");
+            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Instructor.csv");
             BufferedReader br = new BufferedReader(fr);
             String [] values = null;
             while((line = br.readLine()) != null){
@@ -146,7 +186,7 @@ public class Factory {
             }
             int id = Integer.parseInt(values[0]) + 1;
 
-            pw.println("\n"+id+","+name+","+primaryCourse+","+secondaryCourse+","+prefferedDay+","+prefferenedTime);
+            pw.println(id+","+name+","+primaryCourse+","+secondaryCourse+","+prefferedDay+","+prefferenedTime);
             pw.close();
 
 
@@ -156,14 +196,14 @@ public class Factory {
 
     public void writeCourses(String name){
         try {
-            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Courses.csv" , true);
+            FileWriter fw = new FileWriter("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Courses.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
 
             String line="";
             FileReader fr;
-            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Courses.csv");
+            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Courses.csv");
             BufferedReader br = new BufferedReader(fr);
             String [] values = null;
             while((line = br.readLine()) != null){
@@ -173,7 +213,7 @@ public class Factory {
             }
             int id = Integer.parseInt(values[0]) + 1;
 
-            pw.println("\n"+id+","+name);
+            pw.println(id+","+name);
             pw.close();
 
 
@@ -183,14 +223,14 @@ public class Factory {
 
     public void writeRooms(int number){
         try {
-            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Rooms.csv" , true);
+            FileWriter fw = new FileWriter("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Rooms.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
 
             String line="";
             FileReader fr;
-            fr = new FileReader("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Rooms.csv");
+            fr = new FileReader("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Rooms.csv");
             BufferedReader br = new BufferedReader(fr);
             String [] values = null;
             while((line = br.readLine()) != null){
@@ -200,7 +240,7 @@ public class Factory {
             }
             int id = Integer.parseInt(values[0]) + 1;
 
-            pw.println("\n"+id+","+number);
+            pw.println(id+","+number);
             pw.close();
 
 
@@ -210,12 +250,12 @@ public class Factory {
 
     public void writeStudents(int num , String course){
         try {
-            FileWriter fw = new FileWriter("C:\\Users\\ahmad\\IdeaProjects\\SDAProject\\src\\sample\\Students.csv" , true);
+            FileWriter fw = new FileWriter("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Students.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
 
-            pw.println("\n"+num+","+course);
+            pw.println(num+","+course);
             pw.close();
 
 
@@ -223,58 +263,300 @@ public class Factory {
         catch (Exception e){}
     }
 
-    private static void setSections(Factory x){
-        String Pricourse;
-        for(int i = 0;i<x.instructorCount;i++){
-            Pricourse =  x.instructorArray[i].getPrimaryCourse();
-            int courseIndex = -1;
-            for(int j=0;j<x.courseCount;j++){
-                if(x.courseArray[j].getCourseName().equals(Pricourse)){
-                    courseIndex = j;
+    public void writeSections(String instructor , String sect , int room , int std){
+        try {
+            FileWriter fw = new FileWriter("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Sections.csv" , true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+
+
+            pw.println(instructor+","+sect+","+room+","+std);
+            pw.close();
+        }
+        catch (Exception e){}
+    }
+
+    public void writeSchedule(int time , Section sec , int room){
+        try {
+            FileWriter fw = new FileWriter("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Schedule.csv" , true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+
+
+            pw.println(time+","+sec.getSection()+","+sec.getInstructorName()+","+sec.getStudets()+","+room);
+            pw.close();
+        }
+        catch (Exception e){}
+    }
+
+
+    public void calculateTotalStudents(){
+        int tot = 0;
+        for(int i =0 ; studentArray[i] != null; i++){
+            tot += studentArray[i].getNumber();
+        }
+        TotalStudets = tot;
+    }
+
+    public void createSections() {
+        int[][] TimeRoom = new int[100][100];
+        for(int v = 0 ; v < roomCount ; v++){
+            TimeRoom[v][0] = roomArray[v].getRoomID();
+        }
+
+        int ic = instructorCount;
+        int cc = courseCount;
+        int rc = roomCount;
+        int stc = studentCount;
+        int i = 0;
+        int room = 0;
+        int max = 0;
+        String[][] secNames = new String[100][100];
+        //SETTING SECTION NAMES
+        for(int j = 0 ; courseArray[j] != null ; j++){
+            secNames[j][0] = courseArray[j].getCourseName();
+        }
+
+        String[][] stdCourseCount = new String[100][100];
+        //COURSE STUDENT COUNT
+        for(int j = 0 ; studentArray[j] != null ; j++ ){
+            stdCourseCount[j][0] = studentArray[j].getCourse();
+            stdCourseCount[j][1] = String.valueOf(studentArray[j].getNumber());
+        }
+
+        while (true) {
+            //CHECK IF DATA IS AVAILABLE
+            if (TotalStudets <= 0) {
+                ScheduleText = "No More Students";
+                break;
+            }
+            if (roomCount <= room) {
+                ScheduleText = "No More Rooms Left";
+                break;
+            }
+            if (courseCount <= 0) {
+                ScheduleText = "No More Courses Left";
+                break;
+            }
+            if (ic <= 0) {
+                ScheduleText = "No More Instructors Left";
+                break;
+            }
+            Section [] sect = new Section[100];
+            //GETTING PREFERED COURSE FROM INSTRUCTOR AND CREATING SECTION
+            String preffered = instructorArray[i].getPrimaryCourse();
+            Room currRoom;
+
+
+
+            int i1 = -1;
+            int ccount = 0;
+            for(int k = 0; stdCourseCount[k][0] != null ; k++ ){
+                if(stdCourseCount[k][0].equals(preffered)){
+                    i1 = k;
+                    ccount = Integer.parseInt(stdCourseCount[k][1]);
+                }
+            }
+
+            if(ccount > 0) {
+                int ti = 0;
+                int o = 0;
+                int flag = 0;
+                Section sec = new Section();
+                String sn = "";
+                for (int j = 0; j < courseCount; j++) {
+                    if (studentArray[j].getCourse().equals(preffered)) {
+                        currRoom = roomArray[room];
+                        flag = 1;
+                        //CREATING A SECTION
+                        sec.setInstructor(instructorArray[i]);
+                        sec.setRoom(currRoom.getRoomID());
+                        sec.setSection(studentArray[i].getCourse());
+                        int cap = currRoom.getRoomCapacity();
+                        if (studentArray[j].getNumber() > cap) {
+                            studentArray[j].setNumber(studentArray[j].getNumber() - cap);
+                            sec.setStudents(cap);
+                            ccount = ccount - cap;
+                        } else {
+                            sec.setStudents(studentArray[j].getNumber());
+                            studentArray[j].setNumber(0);
+                            ccount = ccount - cap;
+                        }
+                        stdCourseCount[i1][1] = String.valueOf(ccount);
+                        //FINDING AND ASSIGNING SECTION NAMES
+                        int index = -1;
+                        for (int k = 0; secNames[k][0] != null; k++) {
+                            if (secNames[k][0].equals(studentArray[j].getCourse())) {
+                                int count = 0;
+                                for (int l = 0; secNames[k][l] != null; l++) {
+                                    count++;
+                                }
+                                secNames[k][count] = String.valueOf(count);
+                                String aa = String.valueOf((char) (count + 64));
+                                sn = secNames[k][0] + "-" + aa;
+                            }
+                        }
+                        sec.setSection(sn);
+                        sec.setTime(ti);
+                        sect[i] = sec;
+                        writeSections(sec.getInstructorName(), sec.getSection(), sec.getRoom(), sec.getStudets());
+                        o = 1;
+                        break;
+                    }
+                }
+                if(ti == 18) {
+                    room++;
+                    max++;
+                    o = 0;
+                }
+                else {
+                    ti++;
+                    max++;
+                    o = 0;
+                }
+            }
+            else {i++;}
+            if(max >= 2 ){
+                i++;
+                max = 0;
+                ic--;
+            }
+        }
+
+        if(TotalStudets > 0){
+            i = 0;
+            while (instructorArray[i] != null) {
+                //CHECK IF DATA IS AVAILABLE
+                if (TotalStudets <= 0) {
+                    ScheduleText = "No More Students";
                     break;
                 }
-            }
-            if(courseIndex != -1) {
-                int secOfCIndex = -1;
-                for(int j=0;j<x.sectionOfCoursesCount;j++){
-                    if(x.section[j].getCourse().equals(Pricourse)){
-                        secOfCIndex = j;
-                        break;
-                    }
+                if (roomCount <= room) {
+                    ScheduleText = "No More Rooms Left";
+                    break;
                 }
-                if(secOfCIndex == -1) {
-                    Course temp = new Course(x.courseArray[courseIndex].getCourseName(), x.courseArray[courseIndex].getCourseID());
-                    x.section[x.sectionOfCoursesCount] = new SectionOfCourses(temp);
+                if (courseCount <= 0) {
+                    ScheduleText = "No More Courses Left";
+                    break;
                 }
-                for(int j=0;j<x.sectionOfCoursesCount;j++){
-                    if(x.section[j].getCourse().equals(Pricourse)){
-                        secOfCIndex = j;
-                        break;
-                    }
+                if (instructorCount <= 0) {
+                    ScheduleText = "No More Instructors Left";
+                    break;
                 }
-                int roomEmptyIndex = -1;
-                for(int j=0;j<x.roomCount;j++){
-                    if(x.roomArray[j].inUse == false){
-                        roomEmptyIndex = j;
-                        break;
+                Section [] sect = new Section[100];
+                //GETTING PREFERED COURSE FROM INSTRUCTOR AND CREATING SECTION
+
+                String preffered = instructorArray[i].getSecondaryCourse();
+                Room currRoom;
+
+                int i1 = -1;
+                int ccount = 0;
+                for(int k = 0; stdCourseCount[k][0] != null ; k++ ){
+                    if(stdCourseCount[k][0].equals(preffered)){
+                        i1 = k;
+                        ccount = Integer.parseInt(stdCourseCount[k][1]);
                     }
                 }
 
-                int studentsNo = 0;
-                for(int j=0;j<x.studentCount;j++){
-                    if(x.studentArray[j].getCourse().equals(Pricourse)){
-                        if(x.studentArray[j].getNumber() > 0){
-                            x.section[secOfCIndex].addSection(x.instructorArray[i], "A", roomEmptyIndex, 0);
+                if(ccount > 0) {
+                    int o = 0;
+                    int flag = 0;
+                    Section sec = new Section();
+                    String sn = "";
+                    for (int j = 0; j < courseCount; j++) {
+                        if (studentArray[j].getCourse().equals(preffered)) {
+                            currRoom = roomArray[room];
+                            flag = 1;
+                            //CREATING A SECTION
+                            sec.setInstructor(instructorArray[i]);
+                            sec.setRoom(currRoom.getRoomID());
+                            int cap = currRoom.getRoomCapacity();
+                            if (studentArray[i].getNumber() > cap) {
+                                studentArray[i].setNumber(studentArray[i].getNumber() - cap);
+                                sec.setStudents(cap);
+                                ccount = ccount - cap;
+                            } else {
+                                sec.setStudents(studentArray[j].getNumber());
+                                studentArray[j].setNumber(0);
+                                ccount = ccount - cap;
+                            }
+                            stdCourseCount[i1][1] = String.valueOf(ccount);
+                            //FINDING AND ASSIGNING SECTION NAMES
+                            int index = -1;
+                            for (int k = 0; secNames[k][0] != null; k++) {
+                                if (secNames[k][0].equals(studentArray[j].getCourse())) {
+                                    int count = 0;
+                                    for (int l = 0; secNames[k][l] != null; l++) {
+                                        count++;
+                                    }
+                                    secNames[k][count] = String.valueOf(count);
+                                    String aa = String.valueOf((char) (count + 64));
+                                    sn = secNames[k][0] + "-" + aa;
+                                }
+                            }
+                            sec.setSection(sn);
+                            sect[i] = sec;
+                            writeSections(sec.getInstructorName(), sec.getSection(), sec.getRoom(), sec.getStudets());
+                            o = 1;
+                            break;
                         }
                     }
+                    room++;
+                    max++;
+                    o = 0;
                 }
-
+                else {i++;}
+                if(max >= 2 ){
+                    i++;
+                    max = 0;
+                    instructorCount--;
+                }
             }
-
         }
     }
 
-    public void createSchedule(){
+    public void setTimeSections(){
+        readSections();
+        int i = 0;
+        while(instructorArray[i] != null){
+            Instructor ins = instructorArray[i];
+            int time = ins.getPreferredTime();
+            Section [] insSec = new Section[100];
+            int insSecCount = 0;
+            for(int k = 0 ; sectionArray[k] != null ; k++){
+                if(ins.getInstructorName().equals(sectionArray[k].getInstructorName())){
+                    insSec[insSecCount] = sectionArray[k];
+                    insSecCount++;
+                }
+            }
+            Allocation [] alls = new Allocation[100];
 
+            int o = 0;
+            while(o < insSecCount){
+                int k = 0;
+                int t = ins.getPreferredTime();
+                while(true) {
+                    if(!SearchAllo(alls , t)) {
+                        alls[o] = new Allocation(t, insSec[k], insSec[k].getRoom());
+                        writeSchedule(t, insSec[o], insSec[o].getRoom());
+                        break;
+                    }
+                    if(t==6)
+                        t = 8;
+                    else t++;
+                }
+                o++;
+            }
+            i++;
+        }
+    }
+
+    public boolean SearchAllo(Allocation[] Allo, int key){
+        for (int i = 0 ; Allo[i] != null ; i++){
+            if(Allo[i].getTime() == key) {
+                return true;
+            }
+        }
+        return false;
     }
 }
