@@ -2,6 +2,7 @@ package sample.System;
 
 public class Section {
     Instructor instructor;
+    String instructorName;
     String section;
     int room;
     int students = 0;
@@ -11,12 +12,25 @@ public class Section {
     public Section(){
 
     }
-    public Section(Instructor inst, String sec, int r, int stu){
+    public Section(Instructor inst, String sec, int r, int stu, int tie){
         instructor = inst;
+        instructorName = inst.getInstructorName();
         section = sec;
         room = r;
         students = stu;
+        time = tie;
     }
+
+    public Section(Section sectionD) {
+        instructor = sectionD.instructor;
+        instructorName = sectionD.instructorName;
+        section = sectionD.section;
+        room = sectionD.room;
+        students = sectionD.students;
+        time = sectionD.time;
+        is_preffered_taken = sectionD.is_preffered_taken;
+    }
+
     public void getSectionInfo(){
         System.out.print("Instructor: "+ instructor+ " Section: "+section+ " Room: "+room+ " Students: "+students);
     }

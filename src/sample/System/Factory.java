@@ -99,6 +99,7 @@ public class Factory {
                 String instructor = values[0];
                 int room = Integer.parseInt(values[2]);
                 int std = Integer.parseInt(values[3]);
+                int time = Integer.parseInt(values[4]);
 
                 Instructor i = null;
 
@@ -108,7 +109,7 @@ public class Factory {
                     }
                 }
 
-                sectionArray[sectionCount] = new Section(i , sec , room , std);
+                sectionArray[sectionCount] = new Section(i , sec , room , std , time);
                 sectionCount++;
             }
 

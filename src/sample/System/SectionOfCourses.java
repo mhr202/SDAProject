@@ -21,8 +21,8 @@ public class SectionOfCourses {
         return course.getCourseName();
     }
 
-    public void addSection(Instructor inst, String sec, int room, int students){
-        section[sectionCount] = new Section(inst, sec, room, students);
+    public void addSection(Instructor inst, String sec, int room, int students , int time){
+        section[sectionCount] = new Section(inst, sec, room, students , time);
         sectionCount++;
     }
 }

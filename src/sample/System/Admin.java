@@ -20,11 +20,13 @@ public class Admin extends Application  {
     private TableView tableC = new TableView<Course>();
     private TableView tableR = new TableView<Room>();
     private TableView tableS = new TableView<Students>();
+    private TableView tableSch = new TableView<Section>();
 
     private final ObservableList<Instructor> data = FXCollections.observableArrayList();
     private final ObservableList<Course> dataC = FXCollections.observableArrayList();
     private final ObservableList<Room> dataR = FXCollections.observableArrayList();
     private final ObservableList<Students> dataS = FXCollections.observableArrayList();
+    private final ObservableList<Section> dataSch = FXCollections.observableArrayList();
 
 
     @Override
@@ -83,8 +85,41 @@ public class Admin extends Application  {
     private void extractedCreateSchedule() {
         Button BackToAdminSch = new Button("Back To Admin");
         BackToAdminSch.setOnAction(e -> window.setScene(AdminPage));
-        StackPane layoutInfoSch = new StackPane();
-        layoutInfoSch.getChildren().add(BackToAdminSch);
+
+        VBox layoutInfoSch = new VBox();
+        tableSch.setEditable(true);
+
+        dataSch.clear();
+
+        int secCount = 0;
+        fc.readSections();
+        for(int i = 0 ; fc.sectionArray[i] != null ; i++){
+            secCount++;
+        }
+
+        System.out.print(secCount);
+        for(int i=0; i<fc.sectionCount; i++){
+            dataSch.addAll(FXCollections.observableArrayList(
+                    new Section(fc.sectionArray[i])));
+        }
+
+
+
+        TableColumn NameCol = new TableColumn("Name");
+        NameCol.setCellValueFactory(new PropertyValueFactory<Section,String>("instructorName"));
+        TableColumn SecSectionCol = new TableColumn("Section");
+        SecSectionCol.setCellValueFactory(new PropertyValueFactory<Section,String>("section"));
+        TableColumn PreferredStudentsCol = new TableColumn("Students");
+        PreferredStudentsCol.setCellValueFactory(new PropertyValueFactory<Section,String>("students"));
+        TableColumn PreferredRoomCol = new TableColumn("Room");
+        PreferredRoomCol.setCellValueFactory(new PropertyValueFactory<Section,String>("room"));
+        TableColumn PreferredTimeCol = new TableColumn("Time");
+        PreferredTimeCol.setCellValueFactory(new PropertyValueFactory<Section,String>("time"));
+
+        tableSch.setItems(dataSch);
+        tableSch.getColumns().addAll(NameCol, SecSectionCol, PreferredStudentsCol, PreferredRoomCol, PreferredTimeCol);
+
+        layoutInfoSch.getChildren().addAll(tableSch, BackToAdminSch);
         ScheduleInfo = new Scene(layoutInfoSch, 600, 400);
     }
 
