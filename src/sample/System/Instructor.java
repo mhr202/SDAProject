@@ -9,6 +9,7 @@ public class Instructor extends Factory {
     private int preferredTime;
     private int maxPerDay;
     private boolean isFill;
+    private boolean isPrefferedTime;
 
     public Instructor(){
 
@@ -59,6 +60,9 @@ public class Instructor extends Factory {
     public boolean getisFill(){ return isFill; }
 
     public void ToogleIsFill(){ isFill = !isFill; }
+    public void ToogleIsTime(){ isPrefferedTime = !isPrefferedTime; }
+
+    public boolean getIsTime(){ return isPrefferedTime; }
 
     public String getInstructorName(){
         return instructorName;

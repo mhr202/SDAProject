@@ -6,6 +6,7 @@ public class Section {
     int room;
     int students = 0;
     int time = 0;
+    boolean is_preffered_taken = false;
 
     public Section(){
 

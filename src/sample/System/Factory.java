@@ -33,7 +33,6 @@ public class Factory {
         x.readStudents();
         x.calculateTotalStudents();
         x.createSections();
-        x.setTimeSections();
     }
 
     public void readInstructors(){
@@ -263,14 +262,14 @@ public class Factory {
         catch (Exception e){}
     }
 
-    public void writeSections(String instructor , String sect , int room , int std){
+    public void writeSections(String instructor , String sect , int room , int std , int time){
         try {
             FileWriter fw = new FileWriter("C:\\Users\\Dell\\IdeaProjects\\SDAProjectnew\\src\\sample\\Sections.csv" , true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
 
-            pw.println(instructor+","+sect+","+room+","+std);
+            pw.println(instructor+","+sect+","+room+","+std+","+time);
             pw.close();
         }
         catch (Exception e){}
@@ -303,6 +302,13 @@ public class Factory {
         for(int v = 0 ; v < roomCount ; v++){
             TimeRoom[v][0] = roomArray[v].getRoomID();
         }
+        int timeroomCount = 1;
+
+        String[][] TimeInst = new String [100][100];
+        for(int v = 0 ; v < instructorCount ; v++){
+            TimeInst[v][0] = instructorArray[v].getInstructorName();
+        }
+        int timeinstCount = 1;
 
         int ic = instructorCount;
         int cc = courseCount;
@@ -397,14 +403,86 @@ public class Factory {
                             }
                         }
                         sec.setSection(sn);
-                        sec.setTime(ti);
+                        ti = instructorArray[i].getPreferredTime();
+                        int roomno = 1;
+                        while(true) {
+                            readSections();
+                            if(!instructorArray[i].getIsTime()) {
+                                int gg = 0;
+                                while(roomno <= roomCount) {
+                                    if (!SearchSection(sectionArray, ti, currRoom.getRoomID())) {
+                                        if(!SearchInTImeRoom(TimeRoom , roomno , ti)) {
+                                            if(!SearchInTImeInst(TimeInst , instructorArray[i].getInstructorName() , ti)) {
+                                                sec.setTime(ti);
+                                                instructorArray[i].ToogleIsTime();
+                                                gg = 1;
+                                                TimeRoom[currRoom.getRoomID()][timeroomCount] = ti;
+                                                timeroomCount++;
+                                                TimeInst[currRoom.getRoomID()][timeroomCount] = String.valueOf(ti);
+                                                timeinstCount++;
+                                                sec.setRoom(roomno);
+                                                break;
+                                            }
+                                        }
+                                        else {
+                                            roomno++;
+                                        }
+                                    }
+                                    else {
+                                        roomno++;
+                                    }
+                                }
+                                if(gg == 1){
+                                    break;
+                                }
+                                else {
+                                    if (!SearchSection(sectionArray, ti, currRoom.getRoomID())) {
+                                        if(!SearchInTImeRoom(TimeRoom , currRoom.getRoomID() , ti)) {
+                                            if(!SearchInTImeInst(TimeInst , instructorArray[i].getInstructorName() , ti)) {
+                                                sec.setTime(ti);
+                                                TimeRoom[currRoom.getRoomID()][timeroomCount] = ti;
+                                                timeroomCount++;
+                                                TimeInst[currRoom.getRoomID()][timeroomCount] = String.valueOf(ti);
+                                                timeinstCount++;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                            else {
+                                if(ti != instructorArray[i].getPreferredTime()){
+                                    if (!SearchSection(sectionArray, ti, currRoom.getRoomID())) {
+                                        if(!SearchInTImeInst(TimeInst , instructorArray[i].getInstructorName() , ti)) {
+                                            while (true){
+                                                if(!SearchInTImeRoom(TimeRoom , currRoom.getRoomID() , ti))
+                                                    break;
+                                                ti++;
+                                            }
+                                            sec.setTime(ti);
+
+                                            TimeRoom[currRoom.getRoomID()][timeroomCount] = ti;
+                                            timeroomCount++;
+                                            TimeInst[currRoom.getRoomID()][timeroomCount] = String.valueOf(ti);
+                                            timeinstCount++;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            if(ti==6)
+                                ti = 8;
+                            else ti++;
+                        }
+
                         sect[i] = sec;
-                        writeSections(sec.getInstructorName(), sec.getSection(), sec.getRoom(), sec.getStudets());
+                        writeSections(sec.getInstructorName(), sec.getSection(), sec.getRoom(), sec.getStudets() , sec.getTime());
                         o = 1;
                         break;
                     }
                 }
-                if(ti == 18) {
+                if(ti >= 18) {
                     room++;
                     max++;
                     o = 0;
@@ -495,8 +573,81 @@ public class Factory {
                                 }
                             }
                             sec.setSection(sn);
+
+                            int ti = instructorArray[i].getPreferredTime();
+                            int roomno = 1;
+                            while(true) {
+                                readSections();
+                                if(!instructorArray[i].getIsTime()) {
+                                    int gg = 0;
+                                    while(roomno <= roomCount) {
+                                        if (!SearchSection(sectionArray, ti, currRoom.getRoomID())) {
+                                            if(!SearchInTImeRoom(TimeRoom , roomno , ti)) {
+                                                if(!SearchInTImeInst(TimeInst , instructorArray[i].getInstructorName() , ti)) {
+                                                    sec.setTime(ti);
+                                                    instructorArray[i].ToogleIsTime();
+                                                    gg = 1;
+                                                    TimeRoom[currRoom.getRoomID()][timeroomCount] = ti;
+                                                    timeroomCount++;
+                                                    TimeInst[currRoom.getRoomID()][timeroomCount] = String.valueOf(ti);
+                                                    timeinstCount++;
+                                                    sec.setRoom(roomno);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            roomno++;
+                                        }
+                                    }
+                                    if(gg == 1){
+                                        break;
+                                    }
+                                    else {
+                                        if (!SearchSection(sectionArray, ti, currRoom.getRoomID())) {
+                                            if(!SearchInTImeRoom(TimeRoom , currRoom.getRoomID() , ti)) {
+                                                if(!SearchInTImeInst(TimeInst , instructorArray[i].getInstructorName() , ti)) {
+                                                    sec.setTime(ti);
+                                                    TimeRoom[currRoom.getRoomID()][timeroomCount] = ti;
+                                                    timeroomCount++;
+                                                    TimeInst[currRoom.getRoomID()][timeroomCount] = String.valueOf(ti);
+                                                    timeinstCount++;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                                else {
+                                    if(ti != instructorArray[i].getPreferredTime()){
+                                        if (!SearchSection(sectionArray, ti, currRoom.getRoomID())) {
+                                            if(!SearchInTImeInst(TimeInst , instructorArray[i].getInstructorName() , ti)) {
+                                                ti++;
+                                                while (true){
+                                                    if(!SearchInTImeRoom(TimeRoom , currRoom.getRoomID() , ti))
+                                                        break;
+                                                    ti++;
+                                                }
+                                                sec.setTime(ti);
+
+                                                TimeRoom[currRoom.getRoomID()][timeroomCount] = ti;
+                                                timeroomCount++;
+                                                TimeInst[currRoom.getRoomID()][timeroomCount] = String.valueOf(ti);
+                                                timeinstCount++;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                if(ti==6)
+                                    ti = 8;
+                                else ti++;
+                            }
+
+
                             sect[i] = sec;
-                            writeSections(sec.getInstructorName(), sec.getSection(), sec.getRoom(), sec.getStudets());
+                            writeSections(sec.getInstructorName(), sec.getSection(), sec.getRoom(), sec.getStudets() , sec.getTime());
                             o = 1;
                             break;
                         }
@@ -515,7 +666,7 @@ public class Factory {
         }
     }
 
-    public void setTimeSections(){
+    public void setTimeSections(Section a){
         readSections();
         int i = 0;
         while(instructorArray[i] != null){
@@ -536,6 +687,7 @@ public class Factory {
                 int k = 0;
                 int t = ins.getPreferredTime();
                 while(true) {
+
                     if(!SearchAllo(alls , t)) {
                         alls[o] = new Allocation(t, insSec[k], insSec[k].getRoom());
                         writeSchedule(t, insSec[o], insSec[o].getRoom());
@@ -556,6 +708,45 @@ public class Factory {
             if(Allo[i].getTime() == key) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean SearchSection(Section[] Allo, int key , int room){
+        for (int i = 0 ; Allo[i] != null ; i++){
+            if(Allo[i].getTime() == key && Allo[i].getRoom() == room) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean SearchInTImeRoom(int [][] time , int room , int ti){
+        int i = 0;
+        while(true){
+            if(time[i][0] == room){
+                break;
+            }
+            i++;
+        }
+        for(int x = 0; x <= 10 ; x++){
+            if(time[i][x] == ti)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean SearchInTImeInst(String [][] time , String inst , int ti){
+        int i = 0;
+        while(true){
+            if(time[i][0].equals(inst)){
+                break;
+            }
+            i++;
+        }
+        for(int x = 0; x <= 10 ; x++){
+            if(time[i][x] != null && time[i][x].equals(String.valueOf(ti)))
+                return true;
         }
         return false;
     }
